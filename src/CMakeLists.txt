@@ -76,8 +76,7 @@ else()
 endif()
 
 
-set(EXTRALIBS uuid rt dl
-  ${Boost_LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${ATOMIC_OPS_LIBRARIES})
+set(EXTRALIBS uuid rt dl ${ATOMIC_OPS_LIBRARIES})
 
 if(${WITH_PROFILER})
   list(APPEND EXTRALIBS profiler)
@@ -216,6 +215,7 @@ set(libcommon_files
   common/PrebufferedStreambuf.cc
   common/BackTrace.cc
   common/perf_counters.cc
+  common/mutex_debug.cc
   common/Mutex.cc
   common/OutputDataSocket.cc
   common/admin_socket.cc

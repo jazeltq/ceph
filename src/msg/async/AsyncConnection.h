@@ -36,6 +36,8 @@ using namespace std;
 
 class AsyncMessenger;
 
+static const int ASYNC_IOV_MAX = (IOV_MAX >= 1024 ? IOV_MAX / 4 : IOV_MAX);
+
 /*
  * AsyncConnection maintains a logic session between two endpoints. In other
  * word, a pair of addresses can find the only AsyncConnection. AsyncConnection
@@ -254,7 +256,7 @@ class AsyncConnection : public Connection {
   EventCallbackRef connect_handler;
   EventCallbackRef local_deliver_handler;
   EventCallbackRef wakeup_handler;
-  struct iovec msgvec[IOV_MAX];
+  struct iovec msgvec[ASYNC_IOV_MAX];
   char *recv_buf;
   uint32_t recv_max_prefetch;
   uint32_t recv_start;
@@ -315,7 +317,15 @@ class AsyncConnection : public Connection {
     lock.Unlock();
     mark_down();
   }
-  void cleanup_handler();
+  void cleanup_handler() {
+    delete read_handler;
+    delete write_handler;
+    delete reset_handler;
+    delete remote_reset_handler;
+    delete connect_handler;
+    delete local_deliver_handler;
+    delete wakeup_handler;
+  }
   PerfCounters *get_perf_counter() {
     return logger;
   }
