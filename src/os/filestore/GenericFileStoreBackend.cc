@@ -317,7 +317,7 @@ int GenericFileStoreBackend::do_fiemap(int fd, off_t start, size_t len, struct f
   int size;
   int ret;
 
-  fiemap = (struct fiemap*)calloc(sizeof(struct fiemap), 1);
+  fiemap = (struct fiemap*)calloc(1, sizeof(struct fiemap));
   if (!fiemap)
     return -ENOMEM;
   /*
